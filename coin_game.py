@@ -1,4 +1,5 @@
 import json
+import msvcrt
 import random
 import time
 
@@ -100,19 +101,24 @@ def game():
       results = flip_coins(level)
       print(f"Results: ", end='', flush=True)
       for i, result in enumerate(results):
-        # if i < len(results) - 1:
-        #   print(f"{result}, ", end='', flush=True)
-        # else:
-        #   print(result)
-        print(f"{result}, ", end='', flush=True) if i < len(results) - 1 else print(result)
+        color = '\033[32m' if result == 'H' else '\033[31m'
+        colored_result = f"{color}{result}\033[00m"
+        print(
+            f"{colored_result}, ",
+            end='',
+            flush=True) if i < len(results) - 1 else print(colored_result)
         time.sleep(0.1)
+        while msvcrt.kbhit():
+          msvcrt.getch()
       win = check_win(results)
       if win:
         increase_level(level)
-        print('\"nice one!\"', flush=True)
+        print('\033[34m\"nice one!\"\033[00m', flush=True)
         time.sleep(2)
+        while msvcrt.kbhit():
+          msvcrt.getch()
       else:
-        print('\"nt. try again :)\"', flush=True)
+        print('\033[33m\"nt. try again :)\"\033[00m', flush=True)
 
 
 if __name__ == '__main__':
